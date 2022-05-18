@@ -17,6 +17,7 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'google_map_api_key' => env('GOOGLE_MAPS_API_KEY', 'test'),
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -195,6 +196,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        // spatie
+        Spatie\Permission\PermissionServiceProvider::class,
     ],
 
     /*

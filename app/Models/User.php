@@ -7,16 +7,25 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
 
+
+    public const ADMIN_ROLE = 'admin';
+    public const USER_ROLE = 'user';
+    public const AGENT_ROLE = 'agent';
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
+
+    protected $with = ['roles'];
     protected $fillable = [
         'name',
         'email',
@@ -41,4 +50,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    protected function password(): Attribute
+    {
+        return Attribute::make(
+            set: fn ($value) => bcrypt($value),
+        );
+    }
 }
